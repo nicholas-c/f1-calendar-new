@@ -35,3 +35,12 @@
   font-size: 1.6rem;
   text-transform: uppercase;
 }
+
+.driver {
+  display: flex;
+}
+
+.rank {
+  font-size: 4rem;
+  padding-right: 1rem;
+}

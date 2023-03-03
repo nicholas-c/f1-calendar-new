@@ -34,8 +34,8 @@ export const DriverStandings = async () => {
               className={styles["driver-table-row"]}
               key={driver.Driver.driverId}
             >
-              <div>
-                <div className={styles.points}>{driver.positionText}</div>
+              <div className={styles.driver}>
+                <div className={styles.rank}>{driver.positionText}</div>
 
                 <div>
                   {driver.Driver.givenName} {driver.Driver.familyName}
