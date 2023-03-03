@@ -1,91 +1,116 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+import styles from "./page.module.css";
+import { Lato } from "next/font/google";
+import { Sessions } from "@/components/sessions/sessions.component";
+import { format, add } from "date-fns";
+import { FutureRaces } from "@/components/future-races/future-races.component";
+import { DriverStandings } from "@/components/driver-standings/driver-standings.component";
 
-const inter = Inter({ subsets: ['latin'] })
+const lato = Lato({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
-export default function Home() {
+async function getData() {
+  const raceDataRequest = await fetch(
+    `http://ergast.com/api/f1/${new Date().getUTCFullYear()}.json`,
+    {
+      next: {
+        revalidate: 60 * 60 * 24,
+      },
+    }
+  );
+
+  if (!raceDataRequest.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  const raceData = await raceDataRequest.json();
+
+  const races = raceData.MRData.RaceTable.Races.reduce((accumulator, race) => {
+    const sessions = race.Sprint
+      ? {
+          race: `${race.date} ${race.time}`,
+          sprint: `${race.Sprint.date} ${race.Sprint.time}`,
+          thirdPractice: `${race.SecondPractice.date} ${race.SecondPractice.time}`,
+          qualifying: `${race.Qualifying.date} ${race.Qualifying.time}`,
+          firstPractice: `${race.FirstPractice.date} ${race.FirstPractice.time}`,
+        }
+      : {
+          race: `${race.date} ${race.time}`,
+          qualifying: `${race.Qualifying.date} ${race.Qualifying.time}`,
+          thirdPractice: `${race.ThirdPractice.date} ${race.ThirdPractice.time}`,
+          secondPractice: `${race.SecondPractice.date} ${race.SecondPractice.time}`,
+          firstPractice: `${race.FirstPractice.date} ${race.FirstPractice.time}`,
+        };
+
+    return [
+      ...accumulator,
+      {
+        raceName: race.raceName,
+        circuit: race.Circuit,
+        sessions,
+      },
+    ];
+  }, []);
+
+  let currentRace = 0;
+
+  const futureRaces = races.filter((race, i) => {
+    const isFuture =
+      new Date() < add(new Date(race.sessions.race), { hours: 3 });
+
+    if (!isFuture) {
+      currentRace = i + 1;
+
+      if (currentRace === races.length) {
+        currentRace = currentRace - 1;
+      }
+    }
+
+    return isFuture;
+  });
+
+  return {
+    futureRaces,
+    nextRace: races[currentRace],
+  };
+}
+
+export const revalidate = 60;
+
+export default async function Home() {
+  const { nextRace, futureRaces } = await getData();
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className={lato.className}>
+      <div className={styles["next-race"]}>
+        <h2 className={styles.upcoming}>upcoming race</h2>
+        <div className={styles["race-details"]}>
+          <h3 className={styles.trackName}>
+            {nextRace.circuit.Location.country}
+          </h3>
+
+          <div className={styles["race-date"]}>
+            <span className={styles.date}>
+              {format(new Date(nextRace.sessions.firstPractice), "dd")}-
+              {format(new Date(nextRace.sessions.race), "dd")}
+            </span>
+
+            <span className={styles.month}>
+              {format(new Date(nextRace.sessions.race), "LLL").toUpperCase()}
+            </span>
+          </div>
         </div>
+
+        <div className={styles.raceName}>{nextRace.circuit.circuitName}</div>
+
+        <Sessions data={nextRace.sessions} raceName={nextRace.raceName} />
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
+      <div className={styles.info}>
+        <h2 className={styles["info-title"]}>FUTURE RACES</h2>
+
+        <FutureRaces futureRaces={futureRaces} />
       </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <DriverStandings />
     </main>
-  )
+  );
 }

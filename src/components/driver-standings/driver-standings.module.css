@@ -1,0 +1,37 @@
+.driver-standings {
+  background: #1f222a;
+  color: #fff;
+  font-size: 1.6rem;
+
+  padding: 2rem;
+}
+
+.title {
+  font-weight: 900;
+  text-transform: uppercase;
+  padding-bottom: 2rem;
+}
+
+.driver-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.driver-table-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+
+  border-bottom: 1px solid #2e333a;
+}
+
+.constructor {
+  color: #87888e;
+}
+
+.points {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}

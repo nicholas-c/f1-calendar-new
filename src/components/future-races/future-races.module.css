@@ -1,0 +1,38 @@
+.races {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.race {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+
+  align-items: center;
+}
+
+.race:last-of-type {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.race-image {
+  margin-right: 1rem;
+}
+
+.session-details {
+  font-weight: 300;
+}
+
+.session-details-title {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: #333;
+}
+
+.session-details-date {
+  font-size: 1.6rem;
+  line-height: 2rem;
+  color: #6783c4;
+}
