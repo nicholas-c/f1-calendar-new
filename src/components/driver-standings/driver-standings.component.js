@@ -18,10 +18,44 @@ const getData = async () => {
   return StandingsLists[0].DriverStandings;
 };
 
+const drivers = {
+  hamilton: "Mercedes",
+  russell: "Mercedes",
+  alonso: "Aston Martin",
+  stroll: "Aston Martin",
+  bottas: "Alfa Romeo Racing",
+  zhou: "Alfa Romeo Racing",
+  hulkenberg: "Haas",
+  kevin_magnussen: "Haas",
+  leclerc: "Ferrari",
+  sainz: "Ferrari",
+  norris: "McLaren",
+  piastri: "McLaren",
+  perez: "Red Bull Racing",
+  max_verstappen: "Red Bull Racing",
+  sargeant: "Williams",
+  albon: "Williams",
+  gasly: "Alpine",
+  ocon: "Alpine",
+  tsunoda: "AlphaTauri",
+  de_vries: "AlphaTauri",
+};
+
+const teams = {
+  Mercedes: "#6CD3BF",
+  "Red Bull Racing": "#3671C6",
+  Ferrari: "#F91536",
+  McLaren: "#F58020",
+  Alpine: "#2293D1",
+  AlphaTauri: "#5E8FAA",
+  "Aston Martin": "#358C75",
+  Williams: "#37BEDD",
+  "Alfa Romeo Racing": "#C92D4B",
+  Haas: "#B6BABD",
+};
+
 export const DriverStandings = async () => {
   const data = await getData();
-
-  //   console.log(data);
 
   return (
     <div className={styles["driver-standings"]}>
@@ -33,14 +67,19 @@ export const DriverStandings = async () => {
             <div
               className={styles["driver-table-row"]}
               key={driver.Driver.driverId}
+              style={{
+                "--team-color": teams[drivers[driver.Driver.driverId]],
+              }}
             >
               <div className={styles.driver}>
                 <div className={styles.rank}>{driver.positionText}</div>
 
-                <div>
+                <div className={styles["driver-profile"]}>
                   {driver.Driver.givenName} {driver.Driver.familyName}
                   <br />
-                  <span className={styles.constructor}>Mercedes</span>
+                  <span className={styles.constructor}>
+                    {drivers[driver.Driver.driverId]}
+                  </span>
                 </div>
               </div>
 

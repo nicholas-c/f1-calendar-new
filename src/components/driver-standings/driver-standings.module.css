@@ -1,9 +1,13 @@
 .driver-standings {
+  position: relative;
+  z-index: 10;
   background: #1f222a;
   color: #fff;
   font-size: 1.6rem;
 
   padding: 2rem;
+  border-radius: 1.25rem 1.25rem 0 0;
+  margin-top: -1.5rem;
 }
 
 .title {
@@ -19,12 +23,32 @@
 }
 
 .driver-table-row {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1rem;
+  padding-left: 1.5rem;
 
   border-bottom: 1px solid #2e333a;
+}
+
+.driver-table-row:last-of-type {
+  border: 0;
+  padding-bottom: 0;
+}
+
+.driver-table-row::before {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 1rem;
+
+  width: 5px;
+
+  background-color: var(--team-color);
 }
 
 .constructor {
@@ -40,7 +64,15 @@
   display: flex;
 }
 
+.driver-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .rank {
   font-size: 4rem;
-  padding-right: 1rem;
+  padding-right: 1.5rem;
+  width: 5.6rem;
+  text-align: center;
 }
