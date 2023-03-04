@@ -12,7 +12,7 @@ async function getData() {
     `http://ergast.com/api/f1/${new Date().getUTCFullYear()}.json`,
     {
       next: {
-        revalidate: 60 * 60 * 24,
+        revalidate: 60,
       },
     }
   );
