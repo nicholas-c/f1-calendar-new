@@ -77,7 +77,7 @@ export const Sessions = ({ data, raceName }) => {
                       add(new Date(sessionDate), {
                         hours: sessionTypes[sessionType].sessionLength,
                       }),
-                      "k:mm"
+                      "kk:mm"
                     )}
                   </>
                 )}
