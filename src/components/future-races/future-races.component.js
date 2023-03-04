@@ -7,7 +7,7 @@ import styles from "./future-races.module.css";
 export const FutureRaces = ({ futureRaces }) => {
   return (
     <div className={styles.races}>
-      {futureRaces.slice(1, futureRaces.length).map((race) => (
+      {futureRaces.slice(1, futureRaces.length).map((race, i) => (
         <article className={styles.race} key={race.circuit.circuitId}>
           <Image
             height={33}
@@ -15,6 +15,7 @@ export const FutureRaces = ({ futureRaces }) => {
             alt={race.circuit.Location.country}
             src={flags[race.circuit.circuitId]}
             className={styles["race-image"]}
+            priority={i < 3}
           />
 
           <div className={styles["session-details"]}>
