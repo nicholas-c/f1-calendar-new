@@ -51,6 +51,10 @@
   background-color: var(--team-color);
 }
 
+.driver-table-row:last-of-type::before {
+  bottom: 0;
+}
+
 .constructor {
   color: #87888e;
 }
