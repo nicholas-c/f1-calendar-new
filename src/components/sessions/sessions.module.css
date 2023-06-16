@@ -22,6 +22,11 @@
   font-size: 1.2rem;
 }
 
+.session-date span {
+  padding-left: 0.75rem;
+  opacity: 0.75;
+}
+
 .session:last-of-type {
   padding-bottom: 0;
   border: 0;

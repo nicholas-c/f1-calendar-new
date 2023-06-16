@@ -42,18 +42,15 @@ export const Sessions = ({ data, raceName }) => {
   return (
     <div className={styles.sessions}>
       {Object.entries(data).map(([sessionType, sessionDate]) => {
-        const hasPast =
-          new Date() >=
-          add(new Date(sessionDate), {
-            hours: sessionTypes[sessionType].sessionLength,
-          });
+        const sessionStart = new Date(sessionDate);
+        const sessionEnd = add(sessionStart, {
+          hours: sessionTypes[sessionType].sessionLength,
+        });
+
+        const hasPast = new Date() >= sessionEnd;
 
         const inProgress =
-          new Date() >= new Date(sessionDate) &&
-          new Date() <
-            add(new Date(sessionDate), {
-              hours: sessionTypes[sessionType].sessionLength,
-            });
+          new Date() >= new Date(sessionStart) && new Date() < sessionEnd;
 
         return (
           <div
@@ -67,19 +64,46 @@ export const Sessions = ({ data, raceName }) => {
 
             <div>
               <div className={styles["session-date"]}>
-                {format(new Date(sessionDate), "dd LLL, kk:mm")}
+                {Intl.DateTimeFormat("en-GB", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  day: "numeric",
+                  month: "short",
+                }).format(sessionStart)}
 
                 {sessionType !== "race" && (
                   <>
                     {" "}
                     -{" "}
-                    {format(
-                      add(new Date(sessionDate), {
-                        hours: sessionTypes[sessionType].sessionLength,
-                      }),
-                      "kk:mm"
-                    )}
+                    {Intl.DateTimeFormat("en-GB", {
+                      hour: "numeric",
+                      minute: "numeric",
+                    }).format(sessionEnd)}
                   </>
+                )}
+
+                {Intl.DateTimeFormat().resolvedOptions().timeZone !==
+                  "Europe/London" && (
+                  <span>
+                    (UK:{" "}
+                    {Intl.DateTimeFormat("en-GB", {
+                      hour: "numeric",
+                      minute: "numeric",
+                      timeZone: "Europe/London",
+                    }).format(sessionStart)}
+                    {sessionType !== "race" && (
+                      <>
+                        {" "}
+                        -{" "}
+                        {Intl.DateTimeFormat("en-GB", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          timeZone: "Europe/London",
+                        }).format(sessionEnd)}
+                      </>
+                    )}{" "}
+                    )
+                  </span>
                 )}
               </div>
 

@@ -36,3 +36,8 @@
   line-height: 2rem;
   color: #6783c4;
 }
+
+.session-details-date span {
+  padding-left: 0.75rem;
+  opacity: 0.75;
+}
