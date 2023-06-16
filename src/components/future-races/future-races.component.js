@@ -1,10 +1,21 @@
-import { format, add } from "date-fns";
+"use client";
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
 import { flags } from "@/utils/flags.util";
 import Image from "next/image";
 
 import styles from "./future-races.module.css";
 
 export const FutureRaces = ({ futureRaces }) => {
+  const IntlDate = Intl.DateTimeFormat();
+  const [showUKTime, setShowUKTime] = useState(false);
+
+  useEffect(() => {
+    if (IntlDate.resolvedOptions().timeZone !== "Europe/London") {
+      setShowUKTime(true);
+    }
+  }, [IntlDate]);
+
   return (
     <div className={styles.races}>
       {futureRaces.slice(1, futureRaces.length).map((race, i) => {
@@ -28,8 +39,7 @@ export const FutureRaces = ({ futureRaces }) => {
               <h3 className={styles["session-details-date"]}>
                 {format(new Date(race.sessions.firstPractice), "dd")} -{" "}
                 {format(raceDate, "dd LLLL YYY, kk:mm")}
-                {Intl.DateTimeFormat().resolvedOptions().timeZone !==
-                  "Europe/London" && (
+                {showUKTime && (
                   <span>
                     (UK:{" "}
                     {Intl.DateTimeFormat("en-GB", {

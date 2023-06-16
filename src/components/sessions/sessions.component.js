@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { format, add } from "date-fns";
 import { Gear, Timer, FlagCheckered } from "phosphor-react";
 import clsx from "clsx";
@@ -39,6 +40,15 @@ const sessionTypes = {
 };
 
 export const Sessions = ({ data, raceName }) => {
+  const IntlDate = Intl.DateTimeFormat();
+  const [showUKTime, setShowUKTime] = useState(false);
+
+  useEffect(() => {
+    if (IntlDate.resolvedOptions().timeZone !== "Europe/London") {
+      setShowUKTime(true);
+    }
+  }, [IntlDate]);
+
   return (
     <div className={styles.sessions}>
       {Object.entries(data).map(([sessionType, sessionDate]) => {
@@ -64,32 +74,19 @@ export const Sessions = ({ data, raceName }) => {
 
             <div>
               <div className={styles["session-date"]}>
-                {Intl.DateTimeFormat("en-GB", {
-                  hour: "numeric",
-                  minute: "numeric",
-                  day: "numeric",
-                  month: "short",
-                }).format(sessionStart)}
+                {format(sessionStart, "dd LLL, kk:mm")}
 
                 {sessionType !== "race" && (
-                  <>
-                    {" "}
-                    -{" "}
-                    {Intl.DateTimeFormat("en-GB", {
-                      hour: "numeric",
-                      minute: "numeric",
-                    }).format(sessionEnd)}
-                  </>
+                  <> - {format(sessionEnd, "kk:mm")}</>
                 )}
 
-                {Intl.DateTimeFormat().resolvedOptions().timeZone !==
-                  "Europe/London" && (
+                {showUKTime && (
                   <span>
                     (UK:{" "}
                     {Intl.DateTimeFormat("en-GB", {
                       hour: "numeric",
                       minute: "numeric",
-                      timeZone: "Europe/London",
+                      timeZone: "Europe/Paris",
                     }).format(sessionStart)}
                     {sessionType !== "race" && (
                       <>
@@ -98,10 +95,10 @@ export const Sessions = ({ data, raceName }) => {
                         {Intl.DateTimeFormat("en-GB", {
                           hour: "numeric",
                           minute: "numeric",
-                          timeZone: "Europe/London",
+                          timeZone: "Europe/Paris",
                         }).format(sessionEnd)}
                       </>
-                    )}{" "}
+                    )}
                     )
                   </span>
                 )}
