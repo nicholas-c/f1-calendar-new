@@ -86,7 +86,7 @@ export const Sessions = ({ data, raceName }) => {
                     {Intl.DateTimeFormat("en-GB", {
                       hour: "numeric",
                       minute: "numeric",
-                      timeZone: "Europe/Paris",
+                      timeZone: "Europe/London",
                     }).format(sessionStart)}
                     {sessionType !== "race" && (
                       <>
@@ -95,7 +95,7 @@ export const Sessions = ({ data, raceName }) => {
                         {Intl.DateTimeFormat("en-GB", {
                           hour: "numeric",
                           minute: "numeric",
-                          timeZone: "Europe/Paris",
+                          timeZone: "Europe/London",
                         }).format(sessionEnd)}
                       </>
                     )}
