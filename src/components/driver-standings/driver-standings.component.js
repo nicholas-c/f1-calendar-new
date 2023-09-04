@@ -39,6 +39,8 @@ const drivers = {
   ocon: "Alpine",
   tsunoda: "AlphaTauri",
   de_vries: "AlphaTauri",
+  lawson: "AlphaTauri",
+  ricciardo: "AlphaTauri",
 };
 
 const teams = {
