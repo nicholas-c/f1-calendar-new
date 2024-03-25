@@ -2,7 +2,7 @@ import styles from "./driver-standings.module.css";
 
 const getData = async () => {
   const response = await fetch(
-    "https://ergast.com/api/f1/2023/driverStandings.json"
+    "https://ergast.com/api/f1/2024/driverStandings.json"
   );
 
   if (!response.ok) {
