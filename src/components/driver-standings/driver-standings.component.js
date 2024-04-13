@@ -29,6 +29,7 @@ const drivers = {
   kevin_magnussen: "Haas",
   leclerc: "Ferrari",
   sainz: "Ferrari",
+  bearman: "Ferrari",
   norris: "McLaren",
   piastri: "McLaren",
   perez: "Red Bull Racing",
